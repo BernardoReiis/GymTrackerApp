@@ -18,12 +18,21 @@ class AuthService {
         .map((User? user) => _userFromFirebaseUser(user));
   }
 
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(
+      String email,
+      String password,
+      String username,
+      String weight,
+      String height,
+      String age,
+      List<bool> genderList) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      await DatabaseService(uid: user!.uid).updateUserData("Ze", 0, 0, 0, "M");
+      String gender = genderList[0] ? "M" : "F";
+      await DatabaseService(uid: user!.uid).updateUserData(username,
+          double.parse(weight), double.parse(height), int.parse(age), gender);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(" ------- registerWithEmailAndPassword ---------");
