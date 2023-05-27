@@ -31,7 +31,7 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       String gender = genderList[0] ? "M" : "F";
-      await DatabaseService(uid: user!.uid).updateUserData(username,
+      await DatabaseService(uid: user!.uid).updateUserData(username,email,
           double.parse(weight), double.parse(height), int.parse(age), gender);
       return _userFromFirebaseUser(user);
     } catch (e) {

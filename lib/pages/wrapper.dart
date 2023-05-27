@@ -25,7 +25,7 @@ class Wrapper extends StatelessWidget {
             if (snapshot.hasData) {
               UserData? userData = snapshot.data;
               if (userData!.isManager == true) {
-                return const ManagerTabsPage();
+                return ManagerTabsPage(userData: userData);
               } else {
                 return UserTabsPage(userData: userData);
               }

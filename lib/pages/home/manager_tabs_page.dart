@@ -1,5 +1,6 @@
 import 'package:gymtracker/pages/home/user_home_page.dart';
 
+import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,8 @@ import '../profile/manager_profile_page.dart';
 import 'manager_home_page.dart';
 
 class ManagerTabsPage extends StatelessWidget {
-  const ManagerTabsPage({super.key});
+  final UserData userData;
+  const ManagerTabsPage({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +21,12 @@ class ManagerTabsPage extends StatelessWidget {
         length: 4,
         child: Scaffold(
           bottomNavigationBar: menu(),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              ManagerHomePage(),
-              ManagerTemperaturePage(),
-              ManagerEntriesPage(),
-              ManagerProfilePage(),
+              ManagerHomePage(userData: userData),
+              ManagerTemperaturePage(userData: userData),
+              const ManagerEntriesPage(),
+              ManagerProfilePage(userData: userData),
             ],
           ),
         ));

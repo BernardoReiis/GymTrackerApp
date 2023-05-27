@@ -7,6 +7,8 @@ class UserGT {
 class UserData {
   final String uid;
   final String username;
+  final String email;
+  final String gender;
   final double weight;
   final double height;
   final int age;
@@ -15,6 +17,8 @@ class UserData {
   UserData(
       {required this.uid,
       required this.username,
+      required this.email,
+      required this.gender,
       required this.weight,
       required this.height,
       required this.age,
