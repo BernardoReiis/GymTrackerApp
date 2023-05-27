@@ -50,6 +50,19 @@ class DatabaseService {
     }).toList();
   }
 
+  TemperatureData _temperatureToShowFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs
+        .map((doc) {
+          return TemperatureData(
+            dataTime: doc.get("data_time"),
+            temperature: doc.get("temperature"),
+            temperatureSensorId: doc.get("temperature_sensor_id"),
+          );
+        })
+        .toList()
+        .first;
+  }
+
   Stream<QuerySnapshot> get usersData {
     return userCollection.snapshots();
   }
@@ -64,6 +77,14 @@ class DatabaseService {
         .limit(5)
         .snapshots()
         .map(_temperatureDataFromSnapshot);
+  }
+
+  Stream<TemperatureData> get temperatureShowManagerHome {
+    return temperatureCollection
+        .orderBy("data_time", descending: true)
+        .limit(1)
+        .snapshots()
+        .map(_temperatureToShowFromSnapshot);
   }
 
   // get user doc stream

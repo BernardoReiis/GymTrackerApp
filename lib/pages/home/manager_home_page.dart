@@ -1,9 +1,12 @@
+import '../../models/temperature.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+
+import '../../services/database.dart';
 
 class ManagerHomePage extends StatefulWidget {
   final UserData userData;
@@ -30,37 +33,38 @@ class AppBarGT extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          color: Color.fromRGBO(191, 76, 76, 1),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(12),
-              bottomRight: Radius.circular(12))),
-      constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height * 0.35),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ManagerProfileGT(userData: userData),
-          const IconsStatsGT(),
-        ],
+    return StreamProvider<TemperatureData?>.value(
+      initialData: null,
+      value: DatabaseService(uid: userData.uid).temperatureShowManagerHome,
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Color.fromRGBO(191, 76, 76, 1),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12))),
+        constraints: BoxConstraints.expand(
+            height: MediaQuery.of(context).size.height * 0.35),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            managerProfileGT(userData),
+            IconsStatsGT(userData: userData),
+          ],
+        ),
       ),
     );
   }
 }
 
-class ManagerProfileGT extends StatelessWidget {
-  final UserData userData;
-  const ManagerProfileGT({super.key, required this.userData});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [managerNameGT(userData), Image.asset('images/manager-photo.png')],
-    );
-  }
+Widget managerProfileGT(UserData userData) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      managerNameGT(userData),
+      Image.asset('images/manager-photo.png')
+    ],
+  );
 }
 
 Widget managerNameGT(UserData userData) {
@@ -85,10 +89,12 @@ Widget managerNameGT(UserData userData) {
 }
 
 class IconsStatsGT extends StatelessWidget {
-  const IconsStatsGT({super.key});
+  final UserData userData;
+  const IconsStatsGT({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
+    final temperatureToShow = Provider.of<TemperatureData?>(context);
     return Container(
         decoration: const BoxDecoration(
             color: Color.fromRGBO(255, 254, 254, 0.95),
@@ -99,11 +105,21 @@ class IconsStatsGT extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            iconStat("images/people-group.png", "Times Per Week", "3"),
-            iconStat("images/thermometer-icon.png", "Avg. Training \nTime", "3"),
+            iconStat("images/people-group.png", "Members Training", "3"),
+            iconStat("images/thermometer-icon.png", "Rooms \nTemperature",
+                temperatureValue(temperatureToShow)),
             iconStat("images/zumba-icon.png", "Group Classes \n Per Week", "3")
           ],
         ));
+  }
+}
+
+String temperatureValue(TemperatureData? temperatureToShow) {
+  print(temperatureToShow);
+  if (temperatureToShow == null) {
+    return "0.0";
+  } else {
+    return temperatureToShow.temperature.toStringAsFixed(1);
   }
 }
 

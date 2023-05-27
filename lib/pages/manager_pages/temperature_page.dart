@@ -130,7 +130,7 @@ Widget cardTemperature(TemperatureData temperature) {
           ),
           Container(
               padding: const EdgeInsets.all(10),
-              child: Text("á $time_show mins",
+              child: Text("Há $time_show mins",
                   style: const TextStyle(fontSize: 16)))
         ],
       ));
