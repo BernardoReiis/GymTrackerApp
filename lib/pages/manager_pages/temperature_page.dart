@@ -8,6 +8,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../services/database.dart';
 
+List<Widget> airCon = <Widget>[
+  Row(children: const [Icon(Icons.air), Text('OFF')]),
+  Row(children: const [Icon(Icons.air), Text('ON')]),
+];
+
 class ManagerTemperaturePage extends StatefulWidget {
   final UserData userData;
   const ManagerTemperaturePage({super.key, required this.userData});
@@ -40,6 +45,7 @@ class TempListlast extends StatefulWidget {
 }
 
 class _TempListlastState extends State<TempListlast> {
+  final List<bool> _selectedFruits = <bool>[true, false];
   @override
   Widget build(BuildContext context) {
     final temperatureData = Provider.of<List<TemperatureData>?>(context);
@@ -50,9 +56,36 @@ class _TempListlastState extends State<TempListlast> {
       ]);
     } else {
       TemperatureData lastTemp = temperatureData.first;
-      temperatureData.removeAt(0);
       return Column(children: [
         tempNow(lastTemp.temperature.toStringAsFixed(1)),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10.0),
+          child: ToggleButtons(
+            borderWidth: 0,
+            textStyle:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            direction: Axis.horizontal,
+            disabledColor: const Color.fromRGBO(241, 241, 241, 1),
+            onPressed: (int index) {
+              setState(() {
+                // The button that is tapped is set to true, and the others to false.
+                for (int i = 0; i < _selectedFruits.length; i++) {
+                  _selectedFruits[i] = i == index;
+                }
+              });
+            },
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            selectedBorderColor: const Color(0xFFBF4C4C),
+            selectedColor: Colors.white,
+            fillColor: const Color(0xFFBF4C4C),
+            color: Colors.black,
+            constraints: BoxConstraints.expand(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.7 / 2),
+            isSelected: _selectedFruits,
+            children: airCon,
+          ),
+        ),
         Column(
           children: temperatureData.map((e) {
             return cardTemperature(e);

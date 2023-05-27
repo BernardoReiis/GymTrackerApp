@@ -74,7 +74,7 @@ class DatabaseService {
   Stream<List<TemperatureData>> get temperatureDataLatest {
     return temperatureCollection
         .orderBy("data_time", descending: true)
-        .limit(5)
+        .limit(4)
         .snapshots()
         .map(_temperatureDataFromSnapshot);
   }

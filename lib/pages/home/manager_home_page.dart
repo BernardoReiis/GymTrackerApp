@@ -115,7 +115,6 @@ class IconsStatsGT extends StatelessWidget {
 }
 
 String temperatureValue(TemperatureData? temperatureToShow) {
-  print(temperatureToShow);
   if (temperatureToShow == null) {
     return "0.0";
   } else {

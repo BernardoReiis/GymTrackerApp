@@ -60,10 +60,20 @@ class _RegisterPageState extends State<RegisterPage> {
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: const BoxDecoration(
-                                color: Color.fromRGBO(241, 241, 241, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(241, 241, 241, 1),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: const Offset(
+                                      0, 1), // changes position of shadow
+                                )
+                              ],
+                            ),
                             child: TextFormField(
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -83,10 +93,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: const BoxDecoration(
-                                color: Color.fromRGBO(241, 241, 241, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: const Offset(
+                                        0, 1), // changes position of shadow
+                                  )
+                                ],
+                                color: const Color.fromRGBO(241, 241, 241, 1),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(12))),
                             child: TextFormField(
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -106,10 +125,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: const BoxDecoration(
-                                color: Color.fromRGBO(241, 241, 241, 1),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    offset: const Offset(
+                                        0, 1), // changes position of shadow
+                                  )
+                                ],
+                                color: const Color.fromRGBO(241, 241, 241, 1),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(12))),
                             child: TextFormField(
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -117,6 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   icon: Icon(Icons.password),
                                   fillColor: Color.fromRGBO(241, 241, 241, 1),
                                   labelText: "Password"),
+                              obscureText: true,
                               onChanged: (val) {
                                 setState(() {
                                   password = val;
@@ -136,9 +165,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                         left: 20, right: 5),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),
-                                    decoration: const BoxDecoration(
-                                        color: Color.fromRGBO(241, 241, 241, 1),
-                                        borderRadius: BorderRadius.all(
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(0,
+                                                1), // changes position of shadow
+                                          )
+                                        ],
+                                        color: const Color.fromRGBO(
+                                            241, 241, 241, 1),
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(12))),
                                     child: TextFormField(
                                       keyboardType: TextInputType.number,
@@ -154,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         });
                                       },
                                       validator: (val) => val!.isEmpty
-                                          ? "Enter an password"
+                                          ? "Enter an weight"
                                           : null,
                                     ),
                                   ),
@@ -165,9 +205,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                         right: 5, left: 5),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),
-                                    decoration: const BoxDecoration(
-                                        color: Color.fromRGBO(241, 241, 241, 1),
-                                        borderRadius: BorderRadius.all(
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(0,
+                                                1), // changes position of shadow
+                                          )
+                                        ],
+                                        color: const Color.fromRGBO(
+                                            241, 241, 241, 1),
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(12))),
                                     child: TextFormField(
                                       keyboardType: TextInputType.number,
@@ -183,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         });
                                       },
                                       validator: (val) => val!.isEmpty
-                                          ? "Enter an password"
+                                          ? "Enter an height"
                                           : null,
                                     ),
                                   ),
@@ -194,9 +245,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                         right: 20, left: 5),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),
-                                    decoration: const BoxDecoration(
-                                        color: Color.fromRGBO(241, 241, 241, 1),
-                                        borderRadius: BorderRadius.all(
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            spreadRadius: 2,
+                                            blurRadius: 2,
+                                            offset: const Offset(0,
+                                                1), // changes position of shadow
+                                          )
+                                        ],
+                                        color: const Color.fromRGBO(
+                                            241, 241, 241, 1),
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(12))),
                                     child: TextFormField(
                                       keyboardType: TextInputType.number,
@@ -211,9 +273,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                           age = val;
                                         });
                                       },
-                                      validator: (val) => val!.isEmpty
-                                          ? "Enter an password"
-                                          : null,
+                                      validator: (val) =>
+                                          val!.isEmpty ? "Enter an age" : null,
                                     ),
                                   ),
                                 ),
@@ -222,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           Container(
                             child: ToggleButtons(
-                              borderWidth: 0,
+                              borderWidth: 1,
                               textStyle: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.w500),
                               direction: Axis.horizontal,
@@ -263,29 +324,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: TextButton(
-                                onPressed: () async {},
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color(0xFFD9D9D9),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8)),
-                                  fixedSize: Size(
-                                      MediaQuery.of(context).size.width * 0.9,
-                                      50),
-                                ),
-                                child: const Text(
-                                  "Register your fingerprint",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      color: Color(0xFF383838),
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              )),
-                          Container(
                               margin: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 17),
+                                  horizontal: 20, vertical: 40),
                               child: TextButton(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {

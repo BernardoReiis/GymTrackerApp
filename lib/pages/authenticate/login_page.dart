@@ -33,27 +33,39 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                      margin: const EdgeInsets.only(top: 60),
                       padding: const EdgeInsets.symmetric(
                           vertical: 50, horizontal: 20),
                       child: const Text(
                         "GymTracker",
                         style: TextStyle(
-                            fontSize: 50,
+                            fontSize: 60,
                             color: Colors.white,
                             fontWeight: FontWeight.w400),
                       )),
                   Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(241, 241, 241, 1),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset:
+                              const Offset(0, 1), // changes position of shadow
+                        )
+                      ],
+                    ),
                     child: TextFormField(
                       validator: (val) =>
                           val!.isEmpty ? 'Enter an email' : null,
                       decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(217, 217, 217, 1),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromRGBO(0, 0, 0, 1))),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          icon: Icon(Icons.email),
+                          fillColor: Color.fromRGBO(241, 241, 241, 1),
                           labelText: "Email"),
                       onChanged: (val) {
                         setState(() {
@@ -63,15 +75,31 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(241, 241, 241, 1),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset:
+                              const Offset(0, 1), // changes position of shadow
+                        )
+                      ],
+                    ),
                     child: TextFormField(
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter an password' : null,
                       decoration: const InputDecoration(
-                          filled: true,
-                          fillColor: Color.fromRGBO(217, 217, 217, 1),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color.fromRGBO(0, 0, 0, 1))),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          icon: Icon(Icons.password),
+                          fillColor: Color.fromRGBO(241, 241, 241, 1),
                           labelText: "Password"),
+                      obscureText: true,
                       onChanged: (val) {
                         setState(() {
                           password = val;
@@ -81,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: TextButton(
+                      child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             dynamic result = await _auth
