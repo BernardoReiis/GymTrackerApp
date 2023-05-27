@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: const Text(
                         "GymTracker",
                         style: TextStyle(
-                            fontSize: 60,
+                            fontSize: 55,
                             color: Colors.white,
                             fontWeight: FontWeight.w400),
                       )),
