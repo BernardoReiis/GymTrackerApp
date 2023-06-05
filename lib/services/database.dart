@@ -33,8 +33,8 @@ class DatabaseService {
       username: snapshot.get("username"),
       email: snapshot.get("email"),
       gender: snapshot.get("gender"),
-      height: snapshot.get("height"),
-      weight: snapshot.get("weight"),
+      height: snapshot.get("height").toDouble(),
+      weight: snapshot.get("weight").toDouble(),
       age: snapshot.get("age"),
       isManager: snapshot.get("isManager"),
     );

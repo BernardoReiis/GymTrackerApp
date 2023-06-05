@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'fingerprint_page.dart';
+
 class ManagerEntriesPage extends StatelessWidget {
   const ManagerEntriesPage({super.key});
 
@@ -12,7 +14,7 @@ class ManagerEntriesPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Gym Entries"),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(191, 76, 76, 1),
+        backgroundColor: const Color.fromRGBO(191, 76, 76, 1),
       ),
       body: Column(children: [
         addNewUserButton(context),
@@ -72,6 +74,18 @@ Widget userInGym(bool inGym) {
 }
 
 Widget addNewUserButton(BuildContext context) {
+  void showSettingsPanel() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+            child: SettingsForm(),
+          );
+        });
+  }
+
   return Container(
     padding: const EdgeInsets.all(10),
     child: TextButton(
@@ -79,7 +93,7 @@ Widget addNewUserButton(BuildContext context) {
         backgroundColor: const Color.fromRGBO(205, 205, 205, 1),
         fixedSize: Size(MediaQuery.of(context).size.width * 0.9, 50),
       ),
-      onPressed: () async {},
+      onPressed: () => showSettingsPanel(),
       child: const Text(
         "Add new user",
         style: TextStyle(

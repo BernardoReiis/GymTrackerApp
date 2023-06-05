@@ -5,7 +5,7 @@ import '../../services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:cloud_functions/cloud_functions.dart';
 import '../../services/database.dart';
 
 List<Widget> airCon = <Widget>[
@@ -49,6 +49,8 @@ class _TempListlastState extends State<TempListlast> {
   @override
   Widget build(BuildContext context) {
     final temperatureData = Provider.of<List<TemperatureData>?>(context);
+    final HttpsCallable callable =
+        FirebaseFunctions.instance.httpsCallable('changeLedStatus');
 
     if (temperatureData == null) {
       return Column(children: [
@@ -66,13 +68,14 @@ class _TempListlastState extends State<TempListlast> {
                 const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             direction: Axis.horizontal,
             disabledColor: const Color.fromRGBO(241, 241, 241, 1),
-            onPressed: (int index) {
+            onPressed: (int index) async {
               setState(() {
                 // The button that is tapped is set to true, and the others to false.
                 for (int i = 0; i < _selectedFruits.length; i++) {
                   _selectedFruits[i] = i == index;
                 }
               });
+              await callable.call();
             },
             borderRadius: const BorderRadius.all(Radius.circular(8)),
             selectedBorderColor: const Color(0xFFBF4C4C),

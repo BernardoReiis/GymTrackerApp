@@ -105,10 +105,10 @@ class IconsStatsGT extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            iconStat("images/people-group.png", "Members Training", "3"),
+            iconStat("images/people-group.png", "Total Members", "19"),
             iconStat("images/thermometer-icon.png", "Rooms \nTemperature",
                 temperatureValue(temperatureToShow)),
-            iconStat("images/zumba-icon.png", "Group Classes \n Per Week", "3")
+            iconStat("images/zumba-icon.png", "Members Training", "4")
           ],
         ));
   }

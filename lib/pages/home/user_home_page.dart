@@ -100,8 +100,9 @@ class IconsStatsGT extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             iconStat("images/calendar-icon.png", "Times Per Week", "3"),
-            iconStat("images/stopwatch-icon.png", "Avg. Training \nTime", "3"),
-            iconStat("images/zumba-icon.png", "Group Classes \n Per Week", "3")
+            iconStat("images/stopwatch-icon.png", "Avg. Training \nTime", "55"),
+            iconStat("images/zumba-icon.png", "Last Training\n Session",
+                "2 days ago")
           ],
         ));
   }
@@ -121,7 +122,7 @@ Widget iconStat(String iconName, String textDefault, String textNumber) {
         textNumber,
         textAlign: TextAlign.center,
         style: const TextStyle(
-            fontSize: 10, color: Colors.black, fontWeight: FontWeight.w500),
+            fontSize: 10, color: Colors.black, fontWeight: FontWeight.w900),
       ),
       Text(
         textDefault,
