@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SettingsForm extends StatefulWidget {
   @override
@@ -53,7 +54,14 @@ class _SettingsFormState extends State<SettingsForm> {
               ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  await callable.call(<String, dynamic>{'email': email});
+                  HttpsCallableResult res =
+                      await callable.call(<String, dynamic>{'email': email});
+                  if (res.data) {
+                    QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.success,
+                        confirmBtnColor: const Color.fromRGBO(191, 76, 76, 1));
+                  }
                 }
               }),
         ],
