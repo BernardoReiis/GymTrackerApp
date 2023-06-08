@@ -23,9 +23,121 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppBarGT(userData: widget.userData),
+      body: Column(
+        children: [
+          AppBarGT(userData: widget.userData),
+          UsersInGym(userData: widget.userData),
+        ],
+      ),
     );
   }
+}
+
+class UsersInGym extends StatelessWidget {
+  final UserData userData;
+  const UsersInGym({super.key, required this.userData});
+
+  @override
+  Widget build(BuildContext context) {
+    List<UserData> allusers = [];
+    List<FingerPrintData> allfingers = [];
+    List<Widget> widgetList = [];
+    return StreamBuilder<List<UserData>>(
+        stream: DatabaseService(uid: userData.uid).allUsersData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            allusers = snapshot.data!;
+          }
+          return StreamBuilder<List<FingerPrintData>>(
+              stream:
+                  DatabaseService(uid: userData.uid).allFingerprintsForStats(),
+              builder: (context, snapshot) {
+                widgetList = [];
+                if (snapshot.hasData) {
+                  allfingers = snapshot.data!;
+                  for (int i = 0; i < allusers.length; i++) {
+                    if (allusers[i].isManager == false &&
+                        allusers[i].fingerprintId != -1) {
+                      int counter = 0;
+                      for (int j = 0; j < allfingers.length; j++) {
+                        if (allusers[i].fingerprintId ==
+                            allfingers[j].fingerPrintId) {
+                          counter++;
+                        }
+                      }
+                      if (counter % 2 != 0) {
+                        widgetList.add(usersShow(allusers[i]));
+                      }
+                    }
+                  }
+                }
+                if (widgetList.isEmpty) {
+                  return Container(
+                      alignment: Alignment.center,
+                      constraints: BoxConstraints.expand(
+                          height: MediaQuery.of(context).size.height * 0.4),
+                      child: const Text(
+                        "No one is in the gym",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
+                      ));
+                }
+                return Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: const Text(
+                        "Users in the gym",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    Column(
+                      children: widgetList,
+                    ),
+                  ],
+                );
+              });
+        });
+  }
+}
+
+Widget usersShow(UserData userd) {
+  return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: const Offset(0, 3), // changes position of shadow
+            )
+          ],
+          border: Border.all(
+              color: const Color.fromRGBO(116, 116, 116, 1), width: 2),
+          borderRadius: const BorderRadius.all(Radius.circular(12))),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                "images/profile-photo.png",
+                scale: 1.7,
+              )),
+          Container(
+              padding: const EdgeInsets.all(10),
+              child:
+                  Text(userd.username, style: const TextStyle(fontSize: 20))),
+        ],
+      ));
 }
 
 class AppBarGT extends StatelessWidget {
@@ -111,6 +223,8 @@ class IconsStatsGT extends StatelessWidget {
                 stream: DatabaseService(uid: userData.uid)
                     .allFingerprintsForStats(),
                 builder: (context, snapshot) {
+                  int totalMembers = 0;
+                  int trainingMembers = 0;
                   if (snapshot.hasData) {
                     allfingers = snapshot.data!;
                     for (int i = 0; i < allusers.length; i++) {
@@ -130,7 +244,6 @@ class IconsStatsGT extends StatelessWidget {
                       }
                     }
                   }
-
                   return Container(
                       decoration: const BoxDecoration(
                           color: Color.fromRGBO(255, 254, 254, 0.95),

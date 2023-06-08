@@ -65,8 +65,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                                 snapshot.data![3],
                                 snapshot.data![4],
                                 snapshot.data![5],
-                                snapshot.data![6],
-                                snapshot.data!.reduce(max));
+                                snapshot.data![6]);
                           } else {
                             return const Center(
                               child: CircularProgressIndicator(
@@ -119,9 +118,16 @@ class BarChartSample1State extends State<BarChartSample1> {
   }
 
   List<BarChartGroupData> showingGroups(int week1, int week2, int week3,
-          int week4, int week5, int week6, int week7, int max) =>
+          int week4, int week5, int week6, int week7) =>
       List.generate(7, (i) {
-        max = (max / 2).toInt() + 2;
+        List<int> weeksMax = [week1, week2, week3, week4, week5, week6, week7];
+        int max = 0;
+        for (int i = 0; i < weeksMax.length; i++) {
+          if (weeksMax[i] > max) {
+            max = weeksMax[i];
+          }
+        }
+        max = (max / 2).floor() + 2;
         switch (i) {
           case 0:
             return makeGroupData(max, 1, (week1 / 2).floor(),
@@ -170,7 +176,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     return [week1, week2, week3, week4, week5, week6, week7];
   }
 
-  BarChart mainBarData(week1, week2, week3, week4, week5, week6, week7, max) {
+  BarChart mainBarData(week1, week2, week3, week4, week5, week6, week7) {
     return BarChart(
       BarChartData(
         barTouchData: BarTouchData(
@@ -215,7 +221,7 @@ class BarChartSample1State extends State<BarChartSample1> {
           show: false,
         ),
         barGroups:
-            showingGroups(week1, week2, week3, week4, week5, week6, week7, max),
+            showingGroups(week1, week2, week3, week4, week5, week6, week7),
         gridData: FlGridData(show: false),
       ),
       swapAnimationDuration: animDuration,
