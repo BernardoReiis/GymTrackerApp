@@ -294,7 +294,7 @@ Widget iconStat(String iconName, String textDefault, String textNumber) {
         textNumber,
         textAlign: TextAlign.center,
         style: const TextStyle(
-            fontSize: 10, color: Colors.black, fontWeight: FontWeight.w500),
+            fontSize: 10, color: Colors.black, fontWeight: FontWeight.w900),
       ),
       Text(
         textDefault,

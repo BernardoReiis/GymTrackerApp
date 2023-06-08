@@ -23,7 +23,8 @@ class Myapp extends StatelessWidget {
           return StreamProvider<UserGT?>.value(
               initialData: null,
               value: AuthService().user,
-              child: const MaterialApp(home: Wrapper()));
+              child: const MaterialApp(
+                  home: Wrapper(), debugShowCheckedModeBanner: false));
         }
         throw "...";
       },
