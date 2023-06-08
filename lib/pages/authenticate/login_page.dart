@@ -1,5 +1,6 @@
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quickalert/quickalert.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -116,8 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                                 .signInWithEmailAndPassword(email, password);
                             if (result == null) {
                               setState(() {
-                                error =
-                                    'Could not sign in with those credentials';
+                                QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.error,
+                                    confirmBtnColor: const Color(0xFFBF4C4C));
                               });
                             }
                           }

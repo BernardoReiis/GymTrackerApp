@@ -30,7 +30,10 @@ class Wrapper extends StatelessWidget {
                 return UserTabsPage(userData: userData);
               }
             } else {
-              return const EnterPage();
+              return const Center(
+                child: CircularProgressIndicator(
+                    color: Color.fromRGBO(191, 76, 76, 1)),
+              );
             }
           });
     }

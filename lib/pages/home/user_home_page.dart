@@ -248,7 +248,7 @@ List<String> iconStatsStored(List<FingerPrintData> alltrainings) {
 class IconsStatsGT extends StatelessWidget {
   final UserData userData;
   IconsStatsGT({super.key, required this.userData});
-  List<String> trainingStats = [];
+  List<String> trainingStats = ["0", "0", "0"];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<FingerPrintData>>(

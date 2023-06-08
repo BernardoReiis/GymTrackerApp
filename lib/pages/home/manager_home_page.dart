@@ -96,8 +96,10 @@ class UsersInGym extends StatelessWidget {
                             fontWeight: FontWeight.w500),
                       ),
                     ),
-                    Column(
-                      children: widgetList,
+                    SingleChildScrollView(
+                      child: Column(
+                        children: widgetList,
+                      ),
                     ),
                   ],
                 );

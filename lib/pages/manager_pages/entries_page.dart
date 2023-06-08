@@ -30,7 +30,7 @@ class ManagerEntriesPage extends StatelessWidget {
                 widgetList = groupTrainingData(alltrainings, context);
               }
             }
-            return Column(children: widgetList);
+            return SingleChildScrollView(child: Column(children: widgetList));
           }),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +22,22 @@ class UserStatsPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: const Color.fromRGBO(191, 76, 76, 1),
       ),
-      body: Column(
-        children: [
-          BarChartSample1(userData: userData),
-          AvgTrainingTime(userData: userData)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BarChartSample1(userData: userData),
+            SizedBox(height: 20),
+            Text(
+              'Training time per workout',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            AvgTrainingTime(userData: userData)
+          ],
+        ),
       ),
     );
   }
