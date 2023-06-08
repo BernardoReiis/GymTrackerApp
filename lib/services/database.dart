@@ -45,7 +45,7 @@ class DatabaseService {
     );
   }
 
-  List<UserData> __userDataFromSnapshotList(QuerySnapshot snapshot) {
+  List<UserData> _userDataFromSnapshotList(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UserData(
         uid: uid,
@@ -135,7 +135,7 @@ class DatabaseService {
   }
 
   Stream<List<UserData>> get allUsersData {
-    return userCollection.snapshots().map(__userDataFromSnapshotList);
+    return userCollection.snapshots().map(_userDataFromSnapshotList);
   }
 
   // get user doc stream

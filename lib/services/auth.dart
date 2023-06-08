@@ -31,13 +31,11 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       String gender = genderList[0] ? "M" : "F";
-      await DatabaseService(uid: user!.uid).updateUserData(username,email,
+      await DatabaseService(uid: user!.uid).updateUserData(username, email,
           double.parse(weight), double.parse(height), int.parse(age), gender);
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(" ------- registerWithEmailAndPassword ---------");
       print(e.toString());
-      print("----------");
       return null;
     }
   }
@@ -49,9 +47,7 @@ class AuthService {
       User? user = result.user;
       return user;
     } catch (error) {
-      print(" ------- signInWithEmailAndPassword ---------");
       print(error.toString());
-      print("----------");
       return null;
     }
   }

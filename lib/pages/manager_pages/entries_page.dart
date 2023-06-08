@@ -24,6 +24,7 @@ class ManagerEntriesPage extends StatelessWidget {
       body: StreamBuilder<List<UserData>>(
           stream: DatabaseService(uid: userData.uid).allUsersData,
           builder: (context, snapshot) {
+            widgetList = [addNewUserButton(context)];
             if (snapshot.hasData) {
               List<UserData> alltrainings = snapshot.data!;
               if (alltrainings.isNotEmpty) {
@@ -38,7 +39,7 @@ class ManagerEntriesPage extends StatelessWidget {
 
 List<Widget> groupTrainingData(List<UserData> allusers, BuildContext context) {
   List<Widget> result = [addNewUserButton(context)];
-  for (int i = 0; i < allusers.length; i = i + 2) {
+  for (int i = 0; i < allusers.length; i++) {
     UserData userInfo = allusers[i];
     if (userInfo.isManager == false && userInfo.fingerprintId != -1) {
       result.add(usersShow(userInfo));

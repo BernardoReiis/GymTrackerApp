@@ -342,7 +342,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                       setState(() {
                                         errorMessage =
                                             "Please supply a valid email";
-                                        print("Please supply a valid email");
                                       });
                                     }
                                   }
