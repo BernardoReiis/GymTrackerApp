@@ -1,3 +1,4 @@
+import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +9,8 @@ import 'avg_training_time.dart';
 import 'graph_aux.dart';
 
 class UserStatsPage extends StatelessWidget {
-  const UserStatsPage({super.key});
+  final UserData userData;
+  const UserStatsPage({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class UserStatsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          BarChartSample1(),
+          BarChartSample1(userData: userData),
           const AvgTrainingTime(),
         ],
       ),

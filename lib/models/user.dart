@@ -12,6 +12,7 @@ class UserData {
   final double weight;
   final double height;
   final int age;
+  final int fingerprintId;
   final bool isManager;
 
   UserData(
@@ -22,5 +23,6 @@ class UserData {
       required this.weight,
       required this.height,
       required this.age,
+      required this.fingerprintId,
       required this.isManager});
 }

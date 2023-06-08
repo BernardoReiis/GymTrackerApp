@@ -22,7 +22,7 @@ class UserTabsPage extends StatelessWidget {
           body: TabBarView(
             children: [
               UserHomePage(userData: userData),
-              const UserStatsPage(),
+              UserStatsPage(userData: userData),
               UserProfilePage(userData: userData),
             ],
           ),

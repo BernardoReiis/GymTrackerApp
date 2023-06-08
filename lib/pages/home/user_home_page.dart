@@ -1,11 +1,13 @@
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../models/fingerprint.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import '../../services/database.dart';
 
 class UserHomePage extends StatefulWidget {
   final UserData userData;
@@ -16,24 +18,54 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
-  final AuthService _auth = AuthService();
+  Map<String, List> events = {};
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          AppBarGT(userData: widget.userData),
-          const SizedBox(height: 10),
-          CalendarWidget()
-        ],
-      ),
-    );
+    return StreamBuilder<List<FingerPrintData>>(
+        stream: DatabaseService(uid: widget.userData.uid)
+            .fingerprintsForStats(widget.userData.fingerprintId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<FingerPrintData> allevents = snapshot.data!;
+            if (allevents.isNotEmpty) {
+              events = groupEvents(allevents);
+            }
+          }
+          return Scaffold(
+            body: Column(
+              children: [
+                AppBarGT(userData: widget.userData),
+                const SizedBox(height: 10),
+                CalendarWidget(events: events)
+              ],
+            ),
+          );
+        });
   }
 }
 
+Map<String, List<String>> groupEvents(List<FingerPrintData> eventsForGroup) {
+  Map<String, List<String>> result = {};
+  for (int i = 0; i < eventsForGroup.length; i++) {
+    if (i % 2 == 0) {
+      DateTime dateday = DateTime.fromMillisecondsSinceEpoch(
+          eventsForGroup[i].dataTime.toInt() * 1000);
+      String keydate = DateFormat('yMMMMd').format(dateday);
+      List<String> aux = [];
+      if (result.containsKey(keydate)) {
+        aux = result[keydate]!;
+      }
+      aux.add("treino ${i / 2}");
+      result[keydate] = aux;
+    }
+  }
+  return result;
+}
+
 class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({super.key});
+  final events;
+  const CalendarWidget({super.key, required this.events});
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
@@ -42,20 +74,18 @@ class CalendarWidget extends StatefulWidget {
 class _CalendarWidgetState extends State<CalendarWidget> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
-  Map<DateTime, List> events = {
-    DateTime(2023, 6, 7): ['Event A', 'Event B'],
-    DateTime(2023, 6, 10): ['Event C'],
-    // Add more events here
-  };
+
   List _getEventsForTheDay(DateTime day) {
-    DateTime yau = day.toLocal().subtract(const Duration(hours: 1));
-    return events[yau] ?? [];
+    String yau = DateFormat('yMMMMd').format(day);
+    return widget.events[yau] ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
-      eventLoader: _getEventsForTheDay,
+      eventLoader: (day) {
+        return _getEventsForTheDay(day);
+      },
       rowHeight: 45,
       firstDay: DateTime.utc(2010, 10, 16),
       lastDay: DateTime.utc(2030, 3, 14),

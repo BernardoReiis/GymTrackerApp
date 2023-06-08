@@ -5,8 +5,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../models/user.dart';
+
 class BarChartSample1 extends StatefulWidget {
-  BarChartSample1({super.key});
+  final UserData userData;
+  BarChartSample1({super.key, required this.userData});
 
   final Color barBackgroundColor = Colors.grey.shade200;
   final Color barColor = Color.fromRGBO(191, 76, 76, 1);
@@ -52,7 +55,7 @@ class BarChartSample1State extends State<BarChartSample1> {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: FutureBuilder(
-                        future: yau(),
+                        future: getNumWorkoutsLastWeeks(widget.userData),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return mainBarData(
@@ -66,7 +69,8 @@ class BarChartSample1State extends State<BarChartSample1> {
                                 snapshot.data!.reduce(max));
                           } else {
                             return const Center(
-                              child: CircularProgressIndicator(),
+                              child: CircularProgressIndicator(
+                                  color: Color.fromRGBO(191, 76, 76, 1)),
                             );
                           }
                         },
@@ -144,25 +148,25 @@ class BarChartSample1State extends State<BarChartSample1> {
             return throw Error();
         }
       });
-  Future<List<int>> yau() async {
+  Future<List<int>> getNumWorkoutsLastWeeks(UserData userData) async {
     int seconds = 604800;
     double now = DateTime.now().millisecondsSinceEpoch / 10e2;
     double restante = now % seconds;
     double next = restante + now;
-    int week1 =
-        await getNumWorkouts(next - (7 * seconds) + (1 * seconds) - 259505);
-    int week2 =
-        await getNumWorkouts(next - (7 * seconds) + (2 * seconds) - 259505);
-    int week3 =
-        await getNumWorkouts(next - (7 * seconds) + (3 * seconds) - 259505);
-    int week4 =
-        await getNumWorkouts(next - (7 * seconds) + (4 * seconds) - 259505);
-    int week5 =
-        await getNumWorkouts(next - (7 * seconds) + (5 * seconds) - 259505);
-    int week6 =
-        await getNumWorkouts(next - (7 * seconds) + (6 * seconds) - 259505);
-    int week7 =
-        await getNumWorkouts(next - (7 * seconds) + (7 * seconds) - 259505);
+    int week1 = await getNumWorkouts(
+        next - (7 * seconds) + (1 * seconds) - 259505, userData);
+    int week2 = await getNumWorkouts(
+        next - (7 * seconds) + (2 * seconds) - 259505, userData);
+    int week3 = await getNumWorkouts(
+        next - (7 * seconds) + (3 * seconds) - 259505, userData);
+    int week4 = await getNumWorkouts(
+        next - (7 * seconds) + (4 * seconds) - 259505, userData);
+    int week5 = await getNumWorkouts(
+        next - (7 * seconds) + (5 * seconds) - 259505, userData);
+    int week6 = await getNumWorkouts(
+        next - (7 * seconds) + (6 * seconds) - 259505, userData);
+    int week7 = await getNumWorkouts(
+        next - (7 * seconds) + (7 * seconds) - 259505, userData);
     return [week1, week2, week3, week4, week5, week6, week7];
   }
 
@@ -218,14 +222,19 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  Future<int> getNumWorkouts(double timestamp) async {
+  Future<int> getNumWorkouts(double timestamp, UserData userData) async {
     int seconds = 604799;
+    if (userData.fingerprintId == -1) return 0;
     final snap = await FirebaseFirestore.instance
         .collection('fingerprints')
+        .where("fingerprint_id", isEqualTo: userData.fingerprintId)
         .where('data_time', isGreaterThanOrEqualTo: timestamp.toInt())
         .where('data_time', isLessThanOrEqualTo: timestamp.toInt() + seconds)
+        .orderBy('data_time', descending: true)
         .count()
         .get();
+    print("yau");
+    print(snap.count);
     return snap.count;
   }
 

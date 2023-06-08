@@ -27,6 +27,7 @@ class DatabaseService {
       "height": height,
       "weight": weight,
       "isManager": false,
+      "fingerprint_id": -1
     });
   }
 
@@ -40,6 +41,7 @@ class DatabaseService {
       weight: snapshot.get("weight").toDouble(),
       age: snapshot.get("age"),
       isManager: snapshot.get("isManager"),
+      fingerprintId: snapshot.get("fingerprint_id"),
     );
   }
 
@@ -101,10 +103,10 @@ class DatabaseService {
         .map(_temperatureToShowFromSnapshot);
   }
 
-  Stream<List<FingerPrintData>> fingerprintsForStats(int fingerprintId) {
-    return temperatureCollection
+  Stream<List<FingerPrintData>> fingerprintsForStats(int fingerPrintId) {
+    return fingerprintCollection
+        .where("fingerprint_id", isEqualTo: fingerPrintId)
         .orderBy("data_time", descending: true)
-        .where("fingerprint_id", isEqualTo: fingerprintId)
         .snapshots()
         .map(_fingerprintDataFromSnapshotForStats);
   }
