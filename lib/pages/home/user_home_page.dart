@@ -1,3 +1,5 @@
+import 'package:table_calendar/table_calendar.dart';
+
 import '../../models/user.dart';
 import '../../services/auth.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +21,97 @@ class _UserHomePageState extends State<UserHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AppBarGT(userData: widget.userData),
+      body: Column(
+        children: [
+          AppBarGT(userData: widget.userData),
+          const SizedBox(height: 10),
+          CalendarWidget()
+        ],
+      ),
     );
   }
+}
+
+class CalendarWidget extends StatefulWidget {
+  const CalendarWidget({super.key});
+
+  @override
+  State<CalendarWidget> createState() => _CalendarWidgetState();
+}
+
+class _CalendarWidgetState extends State<CalendarWidget> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay = DateTime.now();
+  Map<DateTime, List> events = {
+    DateTime(2023, 6, 7): ['Event A', 'Event B'],
+    DateTime(2023, 6, 10): ['Event C'],
+    // Add more events here
+  };
+  List _getEventsForTheDay(DateTime day) {
+    DateTime yau = day.toLocal().subtract(const Duration(hours: 1));
+    return events[yau] ?? [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TableCalendar(
+      eventLoader: _getEventsForTheDay,
+      rowHeight: 45,
+      firstDay: DateTime.utc(2010, 10, 16),
+      lastDay: DateTime.utc(2030, 3, 14),
+      focusedDay: _focusedDay,
+      calendarStyle: CalendarStyle(
+        markerDecoration: const BoxDecoration(
+          color: Color.fromRGBO(0, 0, 0, 1),
+          shape: BoxShape.circle,
+        ),
+        todayTextStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        todayDecoration: BoxDecoration(
+          border:
+              Border.all(color: const Color.fromRGBO(191, 76, 76, 1), width: 2),
+          color: const Color.fromRGBO(191, 76, 76, 0.05),
+          shape: BoxShape.circle,
+        ),
+        selectedDecoration: const BoxDecoration(
+          color: Color.fromRGBO(191, 76, 76, 1),
+          shape: BoxShape.circle,
+        ),
+        outsideDaysVisible: false,
+      ),
+      headerStyle:
+          const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+      selectedDayPredicate: (day) {
+        return isSameDay(_selectedDay, day);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        setState(() {
+          _selectedDay = selectedDay;
+          _focusedDay = focusedDay; // update _focusedDay here as well
+        });
+      },
+      onPageChanged: (focusedDay) {
+        _focusedDay = focusedDay;
+      },
+    );
+  }
+}
+
+Widget buildEventDots(DateTime date, List events) {
+  return Row(
+    children: events.map((event) {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 2),
+        width: 5,
+        height: 5,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.red, // Customize the dot color as desired
+        ),
+      );
+    }).toList(),
+  );
 }
 
 class AppBarGT extends StatelessWidget {

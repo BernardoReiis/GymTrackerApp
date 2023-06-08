@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/fingerprint.dart';
 import '../models/temperature.dart';
 import '../models/user.dart';
 
@@ -13,6 +14,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference temperatureCollection =
       FirebaseFirestore.instance.collection('temperatures');
+  final CollectionReference fingerprintCollection =
+      FirebaseFirestore.instance.collection('fingerprints');
 
   Future updateUserData(String username, String email, double weight,
       double height, int age, String gender) async {
@@ -63,6 +66,17 @@ class DatabaseService {
         .first;
   }
 
+  List<FingerPrintData> _fingerprintDataFromSnapshotForStats(
+      QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return FingerPrintData(
+        dataTime: doc.get("data_time"),
+        fingerSensorId: doc.get("finger_sensor_id"),
+        fingerPrintId: doc.get("fingerprint_id"),
+      );
+    }).toList();
+  }
+
   Stream<QuerySnapshot> get usersData {
     return userCollection.snapshots();
   }
@@ -85,6 +99,14 @@ class DatabaseService {
         .limit(1)
         .snapshots()
         .map(_temperatureToShowFromSnapshot);
+  }
+
+  Stream<List<FingerPrintData>> fingerprintsForStats(int fingerprintId) {
+    return temperatureCollection
+        .orderBy("data_time", descending: true)
+        .where("fingerprint_id", isEqualTo: fingerprintId)
+        .snapshots()
+        .map(_fingerprintDataFromSnapshotForStats);
   }
 
   // get user doc stream
