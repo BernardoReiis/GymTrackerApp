@@ -47,6 +47,9 @@ class _UserHomePageState extends State<UserHomePage> {
 
 Map<String, List<String>> groupEvents(List<FingerPrintData> eventsForGroup) {
   Map<String, List<String>> result = {};
+  if (eventsForGroup.length % 2 != 0) {
+    eventsForGroup.removeAt(0);
+  }
   for (int i = 0; i < eventsForGroup.length; i++) {
     if (i % 2 == 0) {
       DateTime dateday = DateTime.fromMillisecondsSinceEpoch(
@@ -162,7 +165,7 @@ class AppBarGT extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           UserProfileGT(userData: userData),
-          const IconsStatsGT(),
+          IconsStatsGT(userData: userData),
         ],
       ),
     );
@@ -204,27 +207,83 @@ Widget userNameGT(UserData userData) {
   );
 }
 
-class IconsStatsGT extends StatelessWidget {
-  const IconsStatsGT({super.key});
+List<String> iconStatsStored(List<FingerPrintData> alltrainings) {
+  int timesPerWeek = 0;
+  int avgTrainingTime = 0;
+  int lastTrainingSession = 0;
+  double sum = 0;
+  if (alltrainings.length % 2 != 0) {
+    alltrainings.removeAt(0);
+  }
+  for (int i = 0; i < alltrainings.length; i = i + 2) {
+    double duration = (alltrainings[i].dataTime.toInt() -
+            alltrainings[i + 1].dataTime.toInt()) /
+        60;
+    sum += duration;
+    int seconds = 604800;
+    double now = DateTime.now().millisecondsSinceEpoch / 10e2;
+    double restante = now % seconds;
+    double next = restante + now;
+    double last = next - (7 * seconds) + (7 * seconds) - 259505;
+    if (alltrainings[i].dataTime.toInt() > last) {
+      timesPerWeek++;
+    }
+  }
+  avgTrainingTime = (sum / (alltrainings.length / 2).floor()).toInt();
 
+  lastTrainingSession = ((DateTime.now().millisecondsSinceEpoch / 10e2 -
+              alltrainings[0].dataTime.toInt()) /
+          60 /
+          60 /
+          24)
+      .toInt();
+
+  return [
+    timesPerWeek.toString(),
+    avgTrainingTime.toString(),
+    lastTrainingSession.toString()
+  ];
+}
+
+class IconsStatsGT extends StatelessWidget {
+  final UserData userData;
+  IconsStatsGT({super.key, required this.userData});
+  List<String> trainingStats = [];
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(
-            color: Color.fromRGBO(255, 254, 254, 0.95),
-            borderRadius: BorderRadius.all(Radius.circular(12))),
-        constraints: BoxConstraints.expand(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.85),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            iconStat("images/calendar-icon.png", "Times Per Week", "3"),
-            iconStat("images/stopwatch-icon.png", "Avg. Training \nTime", "55"),
-            iconStat("images/zumba-icon.png", "Last Training\n Session",
-                "2 days ago")
-          ],
-        ));
+    return StreamBuilder<List<FingerPrintData>>(
+        stream: DatabaseService(uid: userData.uid)
+            .fingerprintsForStats(userData.fingerprintId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<FingerPrintData> allevents = snapshot.data!;
+            if (allevents.isNotEmpty) {
+              trainingStats = iconStatsStored(allevents);
+            }
+            return Container(
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(255, 254, 254, 0.95),
+                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                constraints: BoxConstraints.expand(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width * 0.85),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    iconStat("images/calendar-icon.png", "Times Per Week",
+                        trainingStats[0]),
+                    iconStat("images/stopwatch-icon.png",
+                        "Avg. Training \nTime", trainingStats[1]),
+                    iconStat("images/zumba-icon.png", "Last Training\n Session",
+                        "${trainingStats[2]} days ago")
+                  ],
+                ));
+          }
+          return const Center(
+            child: CircularProgressIndicator(
+                color: Color.fromRGBO(191, 76, 76, 1)),
+          );
+        });
   }
 }
 

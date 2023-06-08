@@ -18,12 +18,12 @@ class UserStatsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Stats"),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(191, 76, 76, 1),
+        backgroundColor: const Color.fromRGBO(191, 76, 76, 1),
       ),
       body: Column(
         children: [
           BarChartSample1(userData: userData),
-          const AvgTrainingTime(),
+          AvgTrainingTime(userData: userData)
         ],
       ),
     );

@@ -90,7 +90,7 @@ class BarChartSample1State extends State<BarChartSample1> {
   BarChartGroupData makeGroupData(
     int max,
     int x,
-    double y, {
+    int y, {
     bool isTouched = false,
     Color? barColor,
     double width = 22,
@@ -101,7 +101,7 @@ class BarChartSample1State extends State<BarChartSample1> {
       x: x,
       barRods: [
         BarChartRodData(
-          toY: y,
+          toY: y.toDouble(),
           color: isTouched ? widget.touchedBarColor : barColor,
           width: width,
           borderSide: isTouched
@@ -124,25 +124,25 @@ class BarChartSample1State extends State<BarChartSample1> {
         max = (max / 2).toInt() + 2;
         switch (i) {
           case 0:
-            return makeGroupData(max, 1, week1 / 2,
+            return makeGroupData(max, 1, (week1 / 2).floor(),
                 isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(max, 2, week2 / 2,
+            return makeGroupData(max, 2, (week2 / 2).floor(),
                 isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(max, 3, week3 / 2,
+            return makeGroupData(max, 3, (week3 / 2).floor(),
                 isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(max, 4, week4 / 2,
+            return makeGroupData(max, 4, (week4 / 2).floor(),
                 isTouched: i == touchedIndex);
           case 4:
-            return makeGroupData(max, 5, week5 / 2,
+            return makeGroupData(max, 5, (week5 / 2).floor(),
                 isTouched: i == touchedIndex);
           case 5:
-            return makeGroupData(max, 6, week6 / 2,
+            return makeGroupData(max, 6, (week6 / 2).floor(),
                 isTouched: i == touchedIndex);
           case 6:
-            return makeGroupData(max, 7, week7 / 2,
+            return makeGroupData(max, 7, (week7 / 2).floor(),
                 isTouched: i == touchedIndex);
           default:
             return throw Error();
@@ -233,8 +233,6 @@ class BarChartSample1State extends State<BarChartSample1> {
         .orderBy('data_time', descending: true)
         .count()
         .get();
-    print("yau");
-    print(snap.count);
     return snap.count;
   }
 
