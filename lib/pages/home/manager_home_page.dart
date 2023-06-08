@@ -1,3 +1,4 @@
+import '../../models/fingerprint.dart';
 import '../../models/temperature.dart';
 import '../../models/user.dart';
 import '../../services/auth.dart';
@@ -95,22 +96,64 @@ class IconsStatsGT extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final temperatureToShow = Provider.of<TemperatureData?>(context);
-    return Container(
-        decoration: const BoxDecoration(
-            color: Color.fromRGBO(255, 254, 254, 0.95),
-            borderRadius: BorderRadius.all(Radius.circular(12))),
-        constraints: BoxConstraints.expand(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: MediaQuery.of(context).size.width * 0.85),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            iconStat("images/people-group.png", "Total Members", "19"),
-            iconStat("images/thermometer-icon.png", "Rooms \nTemperature",
-                temperatureValue(temperatureToShow)),
-            iconStat("images/zumba-icon.png", "Members Training", "4")
-          ],
-        ));
+    List<UserData> allusers = [];
+    List<FingerPrintData> allfingers = [];
+    int totalMembers = 0;
+    int trainingMembers = 0;
+    return StreamBuilder<List<UserData>>(
+        stream: DatabaseService(uid: userData.uid).allUsersData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            allusers = snapshot.data!;
+          }
+          return Container(
+            child: StreamBuilder<List<FingerPrintData>>(
+                stream: DatabaseService(uid: userData.uid)
+                    .allFingerprintsForStats(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    allfingers = snapshot.data!;
+                    for (int i = 0; i < allusers.length; i++) {
+                      if (allusers[i].isManager == false &&
+                          allusers[i].fingerprintId != -1) {
+                        totalMembers++;
+                        int counter = 0;
+                        for (int j = 0; j < allfingers.length; j++) {
+                          if (allusers[i].fingerprintId ==
+                              allfingers[j].fingerPrintId) {
+                            counter++;
+                          }
+                        }
+                        if (counter % 2 != 0) {
+                          trainingMembers++;
+                        }
+                      }
+                    }
+                  }
+
+                  return Container(
+                      decoration: const BoxDecoration(
+                          color: Color.fromRGBO(255, 254, 254, 0.95),
+                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                      constraints: BoxConstraints.expand(
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          width: MediaQuery.of(context).size.width * 0.85),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          iconStat("images/people-group.png", "Total Members",
+                              totalMembers.toString()),
+                          iconStat(
+                              "images/thermometer-icon.png",
+                              "Rooms \nTemperature",
+                              temperatureValue(temperatureToShow)),
+                          iconStat("images/zumba-icon.png", "Members Training",
+                              trainingMembers.toString())
+                        ],
+                      ));
+                }),
+          );
+        });
   }
 }
 

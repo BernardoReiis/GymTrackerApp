@@ -44,7 +44,10 @@ class ProfileBodyGT extends StatelessWidget {
         children: [
           Container(
               padding: const EdgeInsets.only(top: 20, bottom: 10),
-              child: Image.asset("images/profile-photo-big.png")),
+              child: Image.asset(
+                "images/manager.png",
+                height: MediaQuery.of(context).size.width * 0.4,
+              )),
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(

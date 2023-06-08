@@ -45,6 +45,22 @@ class DatabaseService {
     );
   }
 
+  List<UserData> __userDataFromSnapshotList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return UserData(
+        uid: uid,
+        username: doc.get("username"),
+        email: doc.get("email"),
+        gender: doc.get("gender"),
+        height: doc.get("height").toDouble(),
+        weight: doc.get("weight").toDouble(),
+        age: doc.get("age"),
+        isManager: doc.get("isManager"),
+        fingerprintId: doc.get("fingerprint_id"),
+      );
+    }).toList();
+  }
+
   List<TemperatureData> _temperatureDataFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return TemperatureData(
@@ -109,6 +125,17 @@ class DatabaseService {
         .orderBy("data_time", descending: true)
         .snapshots()
         .map(_fingerprintDataFromSnapshotForStats);
+  }
+
+  Stream<List<FingerPrintData>> allFingerprintsForStats() {
+    return fingerprintCollection
+        .orderBy("data_time", descending: true)
+        .snapshots()
+        .map(_fingerprintDataFromSnapshotForStats);
+  }
+
+  Stream<List<UserData>> get allUsersData {
+    return userCollection.snapshots().map(__userDataFromSnapshotList);
   }
 
   // get user doc stream

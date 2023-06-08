@@ -25,7 +25,7 @@ class ManagerTabsPage extends StatelessWidget {
             children: [
               ManagerHomePage(userData: userData),
               ManagerTemperaturePage(userData: userData),
-              const ManagerEntriesPage(),
+              ManagerEntriesPage(userData: userData),
               ManagerProfilePage(userData: userData),
             ],
           ),
