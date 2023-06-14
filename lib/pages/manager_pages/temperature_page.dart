@@ -89,10 +89,12 @@ class _TempListlastState extends State<TempListlast> {
             children: airCon,
           ),
         ),
-        Column(
-          children: temperatureData.map((e) {
-            return cardTemperature(e);
-          }).toList(),
+        SingleChildScrollView(
+          child: Column(
+            children: temperatureData.map((e) {
+              return cardTemperature(e);
+            }).toList(),
+          ),
         )
       ]);
     }
