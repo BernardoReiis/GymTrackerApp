@@ -58,45 +58,45 @@ class _TempListlastState extends State<TempListlast> {
       ]);
     } else {
       TemperatureData lastTemp = temperatureData.first;
-      return Column(children: [
-        tempNow(lastTemp.temperature.toStringAsFixed(1)),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10.0),
-          child: ToggleButtons(
-            borderWidth: 0,
-            textStyle:
-                const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-            direction: Axis.horizontal,
-            disabledColor: const Color.fromRGBO(241, 241, 241, 1),
-            onPressed: (int index) async {
-              setState(() {
-                // The button that is tapped is set to true, and the others to false.
-                for (int i = 0; i < _selectedFruits.length; i++) {
-                  _selectedFruits[i] = i == index;
-                }
-              });
-              await callable.call();
-            },
-            borderRadius: const BorderRadius.all(Radius.circular(8)),
-            selectedBorderColor: const Color(0xFFBF4C4C),
-            selectedColor: Colors.white,
-            fillColor: const Color(0xFFBF4C4C),
-            color: Colors.black,
-            constraints: BoxConstraints.expand(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.7 / 2),
-            isSelected: _selectedFruits,
-            children: airCon,
+      return SingleChildScrollView(
+        child: Column(children: [
+          tempNow(lastTemp.temperature.toStringAsFixed(1)),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10.0),
+            child: ToggleButtons(
+              borderWidth: 0,
+              textStyle:
+                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              direction: Axis.horizontal,
+              disabledColor: const Color.fromRGBO(241, 241, 241, 1),
+              onPressed: (int index) async {
+                setState(() {
+                  // The button that is tapped is set to true, and the others to false.
+                  for (int i = 0; i < _selectedFruits.length; i++) {
+                    _selectedFruits[i] = i == index;
+                  }
+                });
+                await callable.call();
+              },
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              selectedBorderColor: const Color(0xFFBF4C4C),
+              selectedColor: Colors.white,
+              fillColor: const Color(0xFFBF4C4C),
+              color: Colors.black,
+              constraints: BoxConstraints.expand(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery.of(context).size.width * 0.7 / 2),
+              isSelected: _selectedFruits,
+              children: airCon,
+            ),
           ),
-        ),
-        SingleChildScrollView(
-          child: Column(
+          Column(
             children: temperatureData.map((e) {
               return cardTemperature(e);
             }).toList(),
-          ),
-        )
-      ]);
+          )
+        ]),
+      );
     }
   }
 }
