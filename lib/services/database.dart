@@ -88,9 +88,9 @@ class DatabaseService {
       QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return FingerPrintData(
-        dataTime: doc.get("data_time"),
-        fingerSensorId: doc.get("finger_sensor_id"),
-        fingerPrintId: doc.get("fingerprint_id"),
+        dataTime: doc.get("data_time").toDouble(),
+        fingerSensorId: doc.get("finger_sensor_id").toDouble(),
+        fingerPrintId: doc.get("fingerprint_id").toDouble(),
       );
     }).toList();
   }

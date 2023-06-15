@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:gymtracker/models/user.dart';
 import 'package:gymtracker/pages/wrapper.dart';
@@ -23,8 +24,13 @@ class Myapp extends StatelessWidget {
           return StreamProvider<UserGT?>.value(
               initialData: null,
               value: AuthService().user,
-              child: const MaterialApp(
-                  home: Wrapper(), debugShowCheckedModeBanner: false));
+              child: MaterialApp(
+                  theme: ThemeData(
+                      appBarTheme: const AppBarTheme(
+                          systemOverlayStyle: SystemUiOverlayStyle(
+                              statusBarColor: Colors.transparent))),
+                  home: const Wrapper(),
+                  debugShowCheckedModeBanner: false));
         }
         throw "...";
       },
